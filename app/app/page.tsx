@@ -198,8 +198,18 @@ export default function HomePage() {
               )}
             </div>
 
+            {/* 3D Checklist Kitten bottom graphic */}
+            <div className="relative w-20 h-12 self-center mt-3 select-none pointer-events-none opacity-90 group-hover:scale-105 transition-transform animate-soft-bounce">
+              <Image
+                src="/images/mascot/nimii-3d-checklist.png?v=3d"
+                alt="Nimii 3D checklist kitten"
+                fill
+                className="object-contain drop-shadow-sm"
+              />
+            </div>
+
             {/* Add a new loop pill button */}
-            <div className="mt-4 pt-2 flex justify-center">
+            <div className="mt-2 pt-1 flex justify-center">
               <button
                 onClick={() => setIsAddModalOpen(true)}
                 className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-white hover:bg-[#F3F0FF] text-xs font-bold text-[#6C5CE7] border border-[#DDD6FE] shadow-sm transition-all hover:scale-105 active:scale-95"
@@ -248,8 +258,18 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* 3D Helper Laptop Kitten bottom graphic */}
+            <div className="relative w-20 h-12 self-center mt-3 select-none pointer-events-none opacity-90 group-hover:scale-105 transition-transform animate-soft-bounce">
+              <Image
+                src="/images/mascot/nimii-3d-laptop.png?v=3d"
+                alt="Nimii 3D helper laptop kitten"
+                fill
+                className="object-contain drop-shadow-sm"
+              />
+            </div>
+
             {/* Nimii's got you footer */}
-            <div className="mt-4 pt-2 text-center">
+            <div className="mt-2 pt-1 text-center">
               <span className="text-xs font-bold text-[#6C5CE7] inline-flex items-center gap-1.5">
                 <span>Nimii&apos;s got you!</span>
                 <span className="text-sm">🐾</span>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   ChevronDown,
@@ -85,13 +86,21 @@ export function PageHeader({
 
       {/* Right side controls */}
       <div className="flex items-center gap-2.5">
-        {/* Online Status Pill */}
+        {/* Online Status Pill with Mini 3D Companion */}
         <div className="relative">
           <button
             onClick={() => setStatusMenuOpen(!statusMenuOpen)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 hover:bg-white border border-white/80 shadow-glass-sm text-xs font-semibold text-[#1E1B4B] transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 hover:bg-white border border-white/80 shadow-glass-sm text-xs font-semibold text-[#1E1B4B] transition-all group"
           >
-            <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+            <div className="relative w-4 h-4 flex-shrink-0 group-hover:scale-110 transition-transform">
+              <Image
+                src="/images/mascot/nimii-3d-logo.png?v=3d"
+                alt="Nimii mini mascot"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
             <span>{user.status}</span>
             <ChevronDown className="w-3.5 h-3.5 text-[#7C7F96]" />
           </button>

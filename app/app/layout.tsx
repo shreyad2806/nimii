@@ -3,6 +3,7 @@
 import React from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { FloatingNimiiCompanion } from "@/components/mascot/FloatingNimiiCompanion";
 import { useApp } from "@/lib/context/AppContext";
 import { X } from "lucide-react";
 
@@ -43,6 +44,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="relative z-10 flex-1 flex flex-col min-w-0 min-h-screen pb-16 md:pb-0 overflow-y-auto">
         {children}
       </div>
+
+      {/* Floating 3D Interactive Nimii Companion */}
+      <FloatingNimiiCompanion />
 
       {/* Mobile Bottom Navigation Bar */}
       <MobileNavigation />

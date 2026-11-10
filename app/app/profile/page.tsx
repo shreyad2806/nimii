@@ -172,6 +172,44 @@ export default function ProfilePage() {
           </div>
         </div>
 
+        {/* 3D AI Companion Bond Showcase Card */}
+        <div className="p-5 rounded-3xl bg-gradient-to-br from-[#FAF7FF] to-[#EDE9FE]/60 border border-[#DDD6FE] flex flex-col sm:flex-row items-center justify-between gap-5 relative overflow-hidden group">
+          <div className="flex items-center gap-4 text-center sm:text-left">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 animate-soft-bounce">
+              <Image
+                src="/images/mascot/nimii-3d-celebrating.png?v=3d"
+                alt="Nimii 3D companion mascot"
+                fill
+                className="object-contain drop-shadow-md"
+              />
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6C5CE7] text-white text-[10px] font-bold tracking-wide uppercase shadow-sm">
+                <Sparkles className="w-3 h-3" />
+                <span>Companion Bond: Level 5</span>
+              </div>
+              <h3 className="text-base font-black text-[#1E1B4B] mt-1.5">
+                Nimii loves assisting you!
+              </h3>
+              <p className="text-xs text-[#64748B] mt-0.5 max-w-sm">
+                Your conversational memory and tasks are actively synced. Nimii is always ready by your side. ♡
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                alert("Nimii purrs softly! ♡ 'Thank you for being the best human companion!'");
+              }}
+              className="px-4 py-2.5 rounded-2xl bg-white hover:bg-[#F3F0FF] border border-[#C4B5FD] shadow-sm text-xs font-bold text-[#6C5CE7] transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5"
+            >
+              <span>Pet Nimii</span>
+              <span>🐾</span>
+            </button>
+          </div>
+        </div>
+
         {/* Mode Switch & Sign out */}
         <div className="pt-4 border-t border-[#F1EFF8] flex items-center justify-between flex-wrap gap-3">
           <div>

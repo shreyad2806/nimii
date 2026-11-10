@@ -1,4 +1,3 @@
-@'
 node_modules/
 .next/
 out/
@@ -9,4 +8,3 @@ build/
 !.env.example
 *.log
 .DS_Store
-'@ | Set-Content .gitignore

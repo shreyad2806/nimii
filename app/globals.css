@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f8f6fc;
+    --foreground: #1e1b4b;
+    --card: rgba(255, 255, 255, 0.88);
+    --card-foreground: #1e1b4b;
+    --popover: #ffffff;
+    --popover-foreground: #1e1b4b;
+    --primary: #6c5ce7;
+    --primary-foreground: #ffffff;
+    --secondary: #ede9fe;
+    --secondary-foreground: #1e1b4b;
+    --muted: #f1eff8;
+    --muted-foreground: #64748b;
+    --accent: #f3f0ff;
+    --accent-foreground: #1e1b4b;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: rgba(221, 214, 254, 0.65);
+    --input: rgba(221, 214, 254, 0.7);
+    --ring: #7c3aed;
+    --radius: 1.25rem;
+  }
+
+  .dark {
+    --background: #0f1026;
+    --foreground: #f3f0ff;
+    --card: rgba(26, 27, 56, 0.88);
+    --card-foreground: #f3f0ff;
+    --popover: #1a1b38;
+    --popover-foreground: #f3f0ff;
+    --primary: #8b5cf6;
+    --primary-foreground: #ffffff;
+    --secondary: #27284e;
+    --secondary-foreground: #ede9fe;
+    --muted: #1e1f3d;
+    --muted-foreground: #94a3b8;
+    --accent: #2c2d58;
+    --accent-foreground: #ffffff;
+    --destructive: #f87171;
+    --destructive-foreground: #ffffff;
+    --border: rgba(99, 102, 241, 0.25);
+    --input: rgba(99, 102, 241, 0.3);
+    --ring: #a78bfa;
+  }
+
+  .theme-light {
+    --background: #fdfcff;
+    --card: rgba(255, 255, 255, 0.95);
+  }
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom dreamy background */
+.scenic-background {
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(254, 215, 170, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 90% 15%, rgba(224, 242, 254, 0.65) 0%, transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(237, 233, 254, 0.7) 0%, transparent 60%),
+    linear-gradient(135deg, #e8f0fe 0%, #f3ebfc 50%, #fde7ef 100%);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.scenic-background-overlay {
+  background-image: url('/images/backgrounds/bg-dreamy.png');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 30px -5px rgba(112, 71, 235, 0.06), 0 4px 12px -2px rgba(30, 27, 75, 0.03);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(237, 233, 254, 0.8);
+  box-shadow: 0 8px 24px -4px rgba(112, 71, 235, 0.05), 0 2px 6px -1px rgba(30, 27, 75, 0.02);
+}
+
+.dark .glass-panel {
+  background: rgba(23, 23, 48, 0.84);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
+}
+
+.dark .glass-card {
+  background: rgba(28, 29, 60, 0.88);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.35);
+}
+
+/* Subtle scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(167, 139, 250, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.6);
+}
+
+/* Animated cute pulse */
+@keyframes soft-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-soft-bounce {
+  animation: soft-bounce 3s ease-in-out infinite;
+}

@@ -1,0 +1,446 @@
+export interface MemoryItem {
+  id: string;
+  title: string;
+  summary: string;
+  details?: string;
+  date: string;
+  time: string;
+  category: "Research" | "AI" | "Development" | "Study" | "Design" | "General";
+  type: "timeline" | "topics" | "saved-facts" | "decisions" | "sources";
+  tags: string[];
+  conversationId?: string;
+  keyPoints?: string[];
+  relatedMemories?: { id: string; title: string; date: string }[];
+}
+
+export interface OpenLoopItem {
+  id: string;
+  title: string;
+  description: string;
+  category: "Project" | "GitHub" | "Hackathon" | "Study" | "Personal" | "Work";
+  timeframe: "today" | "this-week" | "later";
+  dueDate: string;
+  priority: "High" | "Medium" | "Low";
+  completed: boolean;
+  completedAt?: string;
+  createdAt: string;
+}
+
+export interface Citation {
+  id: string;
+  title: string;
+  domain: string;
+  url: string;
+  snippet?: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  sender: "user" | "assistant";
+  content: string;
+  timestamp: string;
+  highlights?: string[];
+  numberedPoints?: string[];
+  citations?: Citation[];
+  followUps?: string[];
+  isWebSearch?: boolean;
+  isRemembered?: boolean;
+  liked?: boolean | null;
+}
+
+export interface Conversation {
+  id: string;
+  title: string;
+  preview: string;
+  date: string;
+  timestamp: string;
+  messageCount: number;
+  tags: string[];
+  messages: ChatMessage[];
+}
+
+export interface UserSettings {
+  language: string;
+  timezone: string;
+  enableWebSearch: boolean;
+  showCitations: boolean;
+  theme: "dreamy" | "light" | "dark";
+  chatDensity: "compact" | "balanced" | "spacious";
+  animations: boolean;
+  saveImportantInfo: boolean;
+  memoryRetention: "Forever" | "30 Days" | "90 Days";
+}
+
+export interface UserProfile {
+  name: string;
+  email: string;
+  avatarInitial: string;
+  isGuest: boolean;
+  status: "Online" | "Away" | "Offline";
+  joinedDate: string;
+}
+
+export const INITIAL_USER: UserProfile = {
+  name: "Shreya Dubey",
+  email: "shreya.dubey@example.com",
+  avatarInitial: "S",
+  isGuest: false,
+  status: "Online",
+  joinedDate: "October 2025",
+};
+
+export const INITIAL_SETTINGS: UserSettings = {
+  language: "English",
+  timezone: "(UTC +05:30) India",
+  enableWebSearch: true,
+  showCitations: true,
+  theme: "dreamy",
+  chatDensity: "balanced",
+  animations: true,
+  saveImportantInfo: true,
+  memoryRetention: "Forever",
+};
+
+export const INITIAL_MEMORIES: MemoryItem[] = [
+  {
+    id: "mem-1",
+    title: "Asked about Next.js 15 updates",
+    summary: "You asked about the latest features in Next.js 15 and how it improves performance and developer experience.",
+    details: "You asked about the latest features in Next.js 15 and how it improves performance and developer experience. I provided information about Turbopack improvements, enhanced caching semantics, React 19 compatibility, and Async Request APIs.",
+    date: "Today • Mar 16, 2025",
+    time: "6:20 PM",
+    category: "Research",
+    type: "timeline",
+    tags: ["Research", "Web Search", "Next.js"],
+    conversationId: "conv-1",
+    keyPoints: [
+      "Turbopack improvements with 76% faster local server startup",
+      "Better caching defaults (fetch requests and GET route handlers un-cached by default)",
+      "Enhanced developer experience and async request handling",
+    ],
+    relatedMemories: [
+      { id: "mem-rel-1", title: "Next.js 15 performance benchmarks", date: "Apr 12, 2025" },
+      { id: "mem-rel-2", title: "React 19 Server Components deep-dive", date: "Mar 10, 2025" },
+    ],
+  },
+  {
+    id: "mem-2",
+    title: "Compared LangGraph with LangChain",
+    summary: "You explored the differences between LangGraph and LangChain for building AI agents.",
+    details: "Analyzed state machines, cycle-based agent loops, human-in-the-loop workflows, and multi-agent coordination. Concluded that LangGraph provides finer control over stateful graph execution.",
+    date: "Yesterday • Mar 15, 2025",
+    time: "4:15 PM",
+    category: "AI",
+    type: "topics",
+    tags: ["AI", "Agents", "LangGraph"],
+    conversationId: "conv-3",
+    keyPoints: [
+      "LangGraph enables cyclic graphs unlike LangChain LCEL DAGs",
+      "Persistence checkpoints built-in for human-in-the-loop approvals",
+      "Better streaming and multi-agent support",
+    ],
+    relatedMemories: [
+      { id: "mem-rel-3", title: "Agentic workflow patterns in production", date: "Feb 28, 2025" },
+    ],
+  },
+  {
+    id: "mem-3",
+    title: "Explored system design for URL shortener",
+    summary: "You discussed the architecture and best practices for building a URL shortener service.",
+    details: "Evaluated Base62 encoding, distributed key generation service (KGS), Redis LRU caching, and rate limiting algorithms.",
+    date: "Nov 8, 2025",
+    time: "9:30 PM",
+    category: "Development",
+    type: "decisions",
+    tags: ["Dev", "System Design", "Backend"],
+    conversationId: "conv-5",
+    keyPoints: [
+      "Used Base62 hashing with 7 character keys supporting 3.5 trillion URLs",
+      "Redis cluster for top 20% hottest redirects",
+      "Bloom filters to prevent cache penetration",
+    ],
+    relatedMemories: [
+      { id: "mem-rel-4", title: "Distributed ID generators (Snowflake)", date: "Nov 2, 2025" },
+    ],
+  },
+  {
+    id: "mem-4",
+    title: "Chosen UI palette for Nimii Assistant",
+    summary: "Saved key branding choices: warm ivory, soft lavender, peach landscapes and pastel kitten mascot.",
+    details: "Finalized cohesive pastel design tokens with deep navy typography to guarantee high readability and cozy aesthetic.",
+    date: "Nov 05, 2025",
+    time: "3:45 PM",
+    category: "Design",
+    type: "saved-facts",
+    tags: ["Design", "Branding", "UI/UX"],
+    conversationId: "conv-4",
+    keyPoints: [
+      "Warm ivory (#FFFFFF / rgba(255,255,255,0.88))",
+      "Primary purple (#6C5CE7) with soft lavender (#EDE9FE)",
+      "Fluffy kitten mascot in various comforting emotional states",
+    ],
+  },
+];
+
+export const INITIAL_OPEN_LOOPS: OpenLoopItem[] = [
+  {
+    id: "loop-1",
+    title: "Finish Mandate project UI",
+    description: "Complete the final UI polish and responsive fixes for Mandate.",
+    category: "Project",
+    timeframe: "today",
+    dueDate: "Today",
+    priority: "High",
+    completed: false,
+    createdAt: "2025-11-10T09:00:00Z",
+  },
+  {
+    id: "loop-2",
+    title: "Review PR #35 – Leadspine",
+    description: "Check the latest changes and merge if everything looks good.",
+    category: "GitHub",
+    timeframe: "today",
+    dueDate: "Today",
+    priority: "Medium",
+    completed: false,
+    createdAt: "2025-11-10T10:30:00Z",
+  },
+  {
+    id: "loop-3",
+    title: "Prepare for Amazon ML Challenge results",
+    description: "Analyze final model performance and prepare summary.",
+    category: "Hackathon",
+    timeframe: "this-week",
+    dueDate: "Fri, Nov 15",
+    priority: "Medium",
+    completed: false,
+    createdAt: "2025-11-09T14:15:00Z",
+  },
+  {
+    id: "loop-4",
+    title: "Plan for next semester courses",
+    description: "Decide on electives and update registration.",
+    category: "Study",
+    timeframe: "later",
+    dueDate: "Nov 20+",
+    priority: "Low",
+    completed: false,
+    createdAt: "2025-11-08T16:00:00Z",
+  },
+  {
+    id: "loop-5",
+    title: "Finish Mandate audit and update PR",
+    description: "Run automated security scan and submit review revisions.",
+    category: "Project",
+    timeframe: "today",
+    dueDate: "Today",
+    priority: "High",
+    completed: true,
+    completedAt: "2025-11-10T18:00:00Z",
+    createdAt: "2025-11-10T08:00:00Z",
+  },
+  {
+    id: "loop-6",
+    title: "Prepare for Capgemini QA",
+    description: "Prepare testing environment and checklist for client QA session.",
+    category: "Work",
+    timeframe: "this-week",
+    dueDate: "Tomorrow",
+    priority: "Medium",
+    completed: true,
+    completedAt: "2025-11-10T17:30:00Z",
+    createdAt: "2025-11-09T11:00:00Z",
+  },
+];
+
+export const INITIAL_CONVERSATIONS: Conversation[] = [
+  {
+    id: "conv-1",
+    title: "Latest AI updates and developments",
+    preview: "Searched for recent updates in AI and new models...",
+    date: "Today • Nov 10, 2025",
+    timestamp: "9:15 PM",
+    messageCount: 12,
+    tags: ["Web Search", "AI"],
+    messages: [
+      {
+        id: "msg-1-1",
+        sender: "user",
+        content: "Tell me about the latest updates in AI in 2025",
+        timestamp: "9:14 PM",
+        isWebSearch: true,
+      },
+      {
+        id: "msg-1-2",
+        sender: "assistant",
+        content: "Here's a summary of the latest AI updates in 2025:",
+        timestamp: "9:15 PM",
+        highlights: [
+          "OpenAI's GPT-5: A major leap in reasoning, multimodal understanding, and real-time collaboration.",
+          "Google Gemini 2.5: Enhanced long-context memory and deeper tool integration.",
+          "Claude 4: Stronger agentic capabilities and improved coding performance.",
+          "Growing AI Agents: More reliable, autonomous agents for real-world tasks.",
+          "Local-First AI: Increased focus on privacy and on-device intelligence.",
+        ],
+        citations: [
+          {
+            id: "cit-1",
+            title: "OpenAI GPT-5 Launch",
+            domain: "openai.com",
+            url: "https://openai.com",
+          },
+          {
+            id: "cit-2",
+            title: "Google Gemini 2.5 Update",
+            domain: "blog.google",
+            url: "https://blog.google",
+          },
+          {
+            id: "cit-3",
+            title: "Claude 4 Release Notes",
+            domain: "anthropic.com",
+            url: "https://anthropic.com",
+          },
+        ],
+        followUps: [
+          "What are the biggest AI trends in 2025?",
+          "How can I use Gemini 2.5?",
+          "What's new in Claude 4?",
+          "Will AI replace developers?",
+        ],
+      },
+    ],
+  },
+  {
+    id: "conv-2",
+    title: "Plan my next semester courses",
+    preview: "Help me choose the best courses for next semester...",
+    date: "Today • Nov 10, 2025",
+    timestamp: "5:42 PM",
+    messageCount: 8,
+    tags: ["Study", "Education"],
+    messages: [
+      {
+        id: "msg-2-1",
+        sender: "user",
+        content: "Help me choose the best courses for next semester. I want to focus on Distributed Systems and Machine Learning.",
+        timestamp: "5:40 PM",
+      },
+      {
+        id: "msg-2-2",
+        sender: "assistant",
+        content: "Here is a balanced course roadmap tailored for your technical focus in Distributed Systems and Applied Machine Learning:",
+        timestamp: "5:42 PM",
+        highlights: [
+          "Core: CS 425 Distributed Systems (covers Paxos, Raft, and distributed storage engines)",
+          "Specialization: CS 446 Machine Learning & Deep Neural Nets",
+          "Elective: Cloud Infrastructure & Kubernetes Architecture",
+          "Balanced Workload: Capstone Research Project on Multi-Agent Memory",
+        ],
+        followUps: [
+          "How heavy is the weekly workload for CS 425?",
+          "Can I audit the Cloud Architecture course?",
+          "Add registration deadline to my Open Loops",
+        ],
+      },
+    ],
+  },
+  {
+    id: "conv-3",
+    title: "Compare LangChain and LangGraph",
+    preview: "Differences, use cases and which to choose...",
+    date: "Yesterday • Nov 09, 2025",
+    timestamp: "7:20 PM",
+    messageCount: 15,
+    tags: ["Research", "Tech", "AI"],
+    messages: [
+      {
+        id: "msg-3-1",
+        sender: "user",
+        content: "Compare LangChain with LangGraph for agentic workflows.",
+        timestamp: "7:18 PM",
+      },
+      {
+        id: "msg-3-2",
+        sender: "assistant",
+        content: "While both frameworks originate from LangChain, they serve distinctly different architectural paradigms:",
+        timestamp: "7:20 PM",
+        highlights: [
+          "Architecture: LangChain is primarily DAG-based (linear chains), whereas LangGraph is a stateful cyclic computation graph.",
+          "Persistence: LangGraph natively provides thread-level checkpoints for rollbacks and state inspection.",
+          "Human-in-the-Loop: LangGraph lets you pause before critical actions, wait for human review, and resume seamlessly.",
+          "Multi-Agent: LangGraph supports hierarchical supervisor and peer network agent topologies natively.",
+        ],
+        followUps: [
+          "Show me a minimal LangGraph agent example in TypeScript",
+          "How does memory persistence work in LangGraph?",
+        ],
+      },
+    ],
+  },
+  {
+    id: "conv-4",
+    title: "Design ideas for Minimi UI",
+    preview: "Explore design inspirations for the assistant...",
+    date: "Yesterday • Nov 09, 2025",
+    timestamp: "3:30 PM",
+    messageCount: 10,
+    tags: ["Design", "Product"],
+    messages: [
+      {
+        id: "msg-4-1",
+        sender: "user",
+        content: "I want a cozy anime-inspired AI assistant with a fluffy kitten mascot and pastel skies.",
+        timestamp: "3:28 PM",
+      },
+      {
+        id: "msg-4-2",
+        sender: "assistant",
+        content: "That sounds delightfully warm and distinctive! Here are key recommendations to make Nimii feel truly magical:",
+        timestamp: "3:30 PM",
+        highlights: [
+          "Use a dreamy gradient palette with lavender clouds, soft sky blues, and warm peach sunsets.",
+          "Feature Nimii the fluffy calico kitten actively engaging in the user's tasks.",
+          "Adopt semi-translucent glass cards with gentle purple drop-shadows.",
+          "Include thoughtful touches like the 'Take a break!' reminder and 'You're all caught up' celebrations.",
+        ],
+        followUps: [
+          "Generate Tailwind color tokens for this palette",
+          "What should the mascot poses be for empty states?",
+        ],
+      },
+    ],
+  },
+  {
+    id: "conv-5",
+    title: "Fix TypeScript errors in DeepSeek Harness",
+    preview: "Debug pnpm and Docker issues...",
+    date: "Nov 08, 2025",
+    timestamp: "10:12 PM",
+    messageCount: 7,
+    tags: ["Development", "Backend"],
+    messages: [
+      {
+        id: "msg-5-1",
+        sender: "user",
+        content: "How do I fix Docker container exit code 137 in my local AI test harness?",
+        timestamp: "10:10 PM",
+      },
+      {
+        id: "msg-5-2",
+        sender: "assistant",
+        content: "Exit code 137 indicates the Docker process was killed by the Linux kernel OOM (Out Of Memory) killer (128 + SIGKILL 9):",
+        timestamp: "10:12 PM",
+        highlights: [
+          "Increase Docker Desktop memory allocation from 2GB to at least 6GB or 8GB in Settings > Resources.",
+          "Pass `--memory=8g --memory-swap=12g` to `docker run`.",
+          "Quantize model weights or offload layers to prevent runaway VRAM/RAM allocation.",
+        ],
+        followUps: [
+          "How to inspect container memory usage with docker stats?",
+          "Can I limit memory per test container?",
+        ],
+      },
+    ],
+  },
+];

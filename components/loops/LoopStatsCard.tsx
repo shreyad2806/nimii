@@ -137,13 +137,17 @@ export function LoopStatsCard({ onOpenAddModal }: LoopStatsCardProps) {
       </div>
 
       {/* Mascot Checklist Card */}
-      <div className="bg-gradient-to-br from-white/90 to-[#F6F3FD]/90 backdrop-blur-md rounded-3xl p-5 border border-white/80 text-center shadow-glass relative overflow-hidden">
-        <div className="relative w-32 h-24 mx-auto mb-2">
+      <div className="bg-gradient-to-br from-white/90 to-[#F6F3FD]/90 backdrop-blur-md rounded-3xl p-5 border border-white/80 text-center shadow-glass relative overflow-hidden group">
+        <div className="relative w-[clamp(110px,12vw,140px)] h-[clamp(85px,10vw,110px)] mx-auto mb-2 animate-soft-bounce">
+          <div
+            className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-black/10 blur-sm rounded-full pointer-events-none"
+            aria-hidden="true"
+          />
           <Image
-            src="/images/mascot/kitten-checklist.png"
-            alt="Stay on track kitten"
+            src="/images/mascot/nimii-3d-checklist.png"
+            alt="3D Nimii holding checklist"
             fill
-            className="object-contain"
+            className="object-contain relative z-10 drop-shadow-sm"
           />
         </div>
         <h4 className="font-bold text-[#1E1B4B] text-sm">Stay on track!</h4>

@@ -68,8 +68,8 @@ export function AssistantResponse({
       {/* Assistant Kitten Avatar */}
       <div className="relative w-10 h-10 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm border border-white/80 bg-white">
         <Image
-          src="/images/mascot/nimii-avatar.png"
-          alt="Nimii"
+          src="/images/mascot/nimii-3d-avatar.png"
+          alt="Nimii 3D Avatar"
           fill
           className="object-contain p-0.5"
         />

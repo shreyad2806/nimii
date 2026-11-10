@@ -62,35 +62,39 @@ export default function MemoryPage() {
   });
 
   return (
-    <div className="flex-1 flex flex-col xl:flex-row min-w-0 p-4 md:p-8 space-y-6">
+    <div className="flex-1 flex flex-col xl:flex-row min-w-0 px-4 md:px-7 pt-2 md:pt-2.5 pb-6 gap-5">
       {/* Center & Left Content */}
-      <div className="flex-1 flex flex-col min-w-0 space-y-6">
+      <div className="flex-1 flex flex-col min-w-0 space-y-3 md:space-y-3.5">
         {/* Top Header Controls */}
         <PageHeader />
 
         {/* Top Banner with Relaxed Lying Mascot */}
-        <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-2">
+        <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pb-0.5">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#EDE9FE] flex items-center justify-center text-[#6C5CE7] shadow-sm">
-              <Brain className="w-6 h-6" />
+            <div className="w-10 h-10 md:w-11 md:h-11 rounded-2xl bg-[#EDE9FE] flex items-center justify-center text-[#6C5CE7] shadow-sm flex-shrink-0">
+              <Brain className="w-5 h-5 md:w-6 md:h-6" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-[#1E1B4B]">
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-[#1E1B4B]">
                 Memory
               </h1>
-              <p className="text-xs md:text-sm text-[#64748B] mt-0.5">
+              <p className="text-xs text-[#64748B] mt-0.5">
                 Your past conversations, saved insights and important moments.
               </p>
             </div>
           </div>
 
-          {/* Banner Mascot Kitten Artwork */}
-          <div className="relative w-64 h-28 md:w-80 md:h-36 select-none pointer-events-none self-end md:self-auto animate-soft-bounce">
+          {/* Banner Mascot Kitten Artwork with clamp sizing */}
+          <div className="relative w-[clamp(160px,18vw,240px)] h-[clamp(75px,8vw,110px)] select-none pointer-events-none self-end md:self-auto animate-soft-bounce">
+            <div
+              className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-black/10 blur-sm rounded-full pointer-events-none"
+              aria-hidden="true"
+            />
             <Image
-              src="/images/mascot/kitten-banner-memory.png"
-              alt="Nimii lying down"
+              src="/images/mascot/nimii-3d-rest.png"
+              alt="Nimii 3D resting kitten"
               fill
-              className="object-contain"
+              className="object-contain relative z-10 drop-shadow-sm"
               priority
             />
           </div>
@@ -199,10 +203,10 @@ export default function MemoryPage() {
           {/* Peeking Kitten Mascot Artwork */}
           <div className="relative w-28 h-16 flex-shrink-0 select-none pointer-events-none animate-soft-bounce">
             <Image
-              src="/images/mascot/kitten-peeking.png"
-              alt="Peeking kitten"
+              src="/images/mascot/nimii-3d-peek.png"
+              alt="Nimii 3D peeking kitten"
               fill
-              className="object-contain"
+              className="object-contain drop-shadow-sm"
             />
           </div>
         </div>

@@ -42,7 +42,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-4 md:p-8 space-y-6 max-w-4xl mx-auto w-full">
+    <div className="flex-1 flex flex-col px-4 md:px-7 pt-2 md:pt-2.5 pb-6 space-y-3.5 max-w-4xl mx-auto w-full">
       <PageHeader
         showBack
         backHref="/app"

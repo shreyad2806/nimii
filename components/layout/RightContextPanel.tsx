@@ -14,7 +14,7 @@ export function RightContextPanel() {
   const isAllCaughtUp = pendingLoops.length === 0;
 
   return (
-    <aside className="w-80 flex-shrink-0 hidden xl:flex flex-col gap-4 p-4 overflow-y-auto max-h-screen">
+    <aside className="w-80 flex-shrink-0 hidden xl:flex flex-col gap-3.5 px-3 md:px-4 pt-2 md:pt-2.5 pb-6 overflow-y-auto max-h-screen">
       {/* 1. Your Memory Card */}
       <div className="bg-white/80 backdrop-blur-md rounded-3xl p-5 border border-white/80 shadow-glass">
         <div className="flex items-center justify-between mb-4">
@@ -121,13 +121,13 @@ export function RightContextPanel() {
       </div>
 
       {/* 3. Cheerful Caught-Up Celebration Card */}
-      <div className="bg-gradient-to-br from-white/90 to-[#FAF7FF]/90 backdrop-blur-md rounded-3xl p-4 border border-white/90 text-center shadow-glass relative overflow-hidden">
-        <div className="relative w-28 h-16 mx-auto mb-1">
+      <div className="bg-gradient-to-br from-white/90 to-[#FAF7FF]/90 backdrop-blur-md rounded-3xl p-4 border border-white/90 text-center shadow-glass relative overflow-hidden group">
+        <div className="relative w-28 h-18 mx-auto mb-1 animate-soft-bounce">
           <Image
-            src="/images/mascot/kitten-celebrating.png"
-            alt="Celebrating mascot"
+            src="/images/mascot/nimii-3d-celebrating.png?v=3d"
+            alt="Nimii 3D celebrating mascot"
             fill
-            className="object-contain"
+            className="object-contain drop-shadow-sm"
           />
         </div>
         <h4 className="font-bold text-[#1E1B4B] text-xs">

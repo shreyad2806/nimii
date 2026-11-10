@@ -9,10 +9,10 @@ export function LoadingState({ message = "Nimii is thinking..." }: { message?: s
     <div className="flex flex-col items-center justify-center p-12 text-center">
       <div className="relative w-20 h-20 mb-3 animate-soft-bounce">
         <Image
-          src="/images/mascot/nimii-avatar.png"
-          alt="Nimii loading"
+          src="/images/mascot/nimii-3d-avatar.png"
+          alt="Nimii 3D loading"
           fill
-          className="object-contain"
+          className="object-contain drop-shadow-sm"
         />
       </div>
       <div className="flex items-center gap-2 text-sm font-bold text-[#6C5CE7]">

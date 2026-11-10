@@ -107,7 +107,7 @@ export default function ChatPage({ params }: ChatPageProps) {
   return (
     <div className="flex-1 flex flex-col xl:flex-row min-w-0 w-full min-h-screen md:h-screen overflow-x-hidden">
       {/* Center Chat Main Area */}
-      <div className="flex-1 flex flex-col min-w-0 w-full h-full p-3 md:p-6 pb-2 overflow-x-hidden overflow-y-auto">
+      <div className="flex-1 flex flex-col min-w-0 w-full h-full px-4 md:px-7 pt-2 md:pt-2.5 pb-3 overflow-x-hidden overflow-y-auto">
         {/* Top Chat Header */}
         <div className="flex items-center justify-between pb-3 px-2 border-b border-white/60">
           <div className="flex items-center gap-3 min-w-0">
@@ -250,10 +250,10 @@ export default function ChatPage({ params }: ChatPageProps) {
             <div className="flex items-center gap-3 p-4 rounded-3xl bg-white/80 backdrop-blur-md border border-[#EDE9FE] max-w-sm">
               <div className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0 animate-bounce">
                 <Image
-                  src="/images/mascot/nimii-avatar.png"
-                  alt="Nimii avatar"
+                  src="/images/mascot/nimii-3d-avatar.png"
+                  alt="Nimii 3D avatar"
                   fill
-                  className="object-contain"
+                  className="object-contain drop-shadow-sm"
                 />
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-[#6C5CE7]">
@@ -272,13 +272,13 @@ export default function ChatPage({ params }: ChatPageProps) {
 
         {/* Bottom Area: Peeking Mascot + Persistent Composer */}
         <div className="relative pt-2">
-          {/* Peeking Kitten artwork right above composer */}
-          <div className="absolute -top-12 right-12 z-20 w-28 h-16 select-none pointer-events-none animate-soft-bounce">
+          {/* 3D Peeking Kitten artwork right above composer */}
+          <div className="absolute -top-13 right-8 md:right-14 z-20 w-[clamp(95px,10vw,125px)] h-[clamp(65px,7vw,85px)] select-none pointer-events-none animate-soft-bounce">
             <Image
-              src="/images/mascot/kitten-chat-peek.png"
-              alt="Peeking kitten"
+              src="/images/mascot/nimii-3d-peek.png"
+              alt="Nimii 3D kitten peeking"
               fill
-              className="object-contain"
+              className="object-contain drop-shadow-sm"
             />
           </div>
 

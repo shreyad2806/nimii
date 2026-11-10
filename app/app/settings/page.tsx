@@ -71,9 +71,9 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col xl:flex-row min-w-0 p-4 md:p-8 space-y-6">
+    <div className="flex-1 flex flex-col xl:flex-row min-w-0 px-4 md:px-7 pt-2 md:pt-2.5 pb-6 gap-5">
       {/* Center Main Settings Area */}
-      <div className="flex-1 flex flex-col min-w-0 space-y-6">
+      <div className="flex-1 flex flex-col min-w-0 space-y-3 md:space-y-3.5">
         {/* Top Header */}
         <PageHeader
           showBack
@@ -461,13 +461,17 @@ export default function SettingsPage() {
       {/* Right Column: Mascot Privacy Card & Quick Links */}
       <div className="w-full xl:w-80 flex-shrink-0 space-y-4">
         {/* Mascot Laptop Privacy Card */}
-        <div className="bg-gradient-to-br from-white/90 to-[#FAF7FF]/90 backdrop-blur-md rounded-3xl p-6 border border-white/80 text-center shadow-glass relative overflow-hidden">
-          <div className="relative w-40 h-32 mx-auto mb-2 select-none pointer-events-none animate-soft-bounce">
+        <div className="bg-gradient-to-br from-white/90 to-[#FAF7FF]/90 backdrop-blur-md rounded-3xl p-6 border border-white/80 text-center shadow-glass relative overflow-hidden group">
+          <div className="relative w-[clamp(130px,14vw,170px)] h-[clamp(90px,10vw,120px)] mx-auto mb-2 select-none pointer-events-none animate-soft-bounce">
+            <div
+              className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-black/10 blur-sm rounded-full pointer-events-none"
+              aria-hidden="true"
+            />
             <Image
-              src="/images/mascot/kitten-laptop.png"
-              alt="Nimii on laptop"
+              src="/images/mascot/nimii-3d-laptop.png"
+              alt="Nimii 3D kitten beside laptop"
               fill
-              className="object-contain"
+              className="object-contain relative z-10 drop-shadow-sm"
               priority
             />
           </div>

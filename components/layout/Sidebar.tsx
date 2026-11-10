@@ -50,12 +50,13 @@ export function Sidebar() {
       <div className="flex flex-col gap-4">
         {/* Brand Header */}
         <Link href="/app" className="flex items-center gap-2.5 px-2 py-1.5 group">
-          <div className="relative w-10 h-10 flex-shrink-0">
+          <div className="relative w-11 h-11 flex-shrink-0">
             <Image
-              src="/images/mascot/nimii-avatar.png"
-              alt="Nimii"
+              src="/images/mascot/nimii-3d-logo.png?v=3d"
+              alt="Nimii 3D Mascot Logo"
               fill
               className="object-contain drop-shadow-sm group-hover:scale-105 transition-transform"
+              priority
             />
           </div>
           <div className="flex items-baseline gap-1">
@@ -115,13 +116,13 @@ export function Sidebar() {
       {/* Bottom Section */}
       <div className="flex flex-col gap-3">
         {/* Take a break sleeping kitten card */}
-        <div className="bg-gradient-to-br from-white/90 to-[#F5F2FC]/80 backdrop-blur-md rounded-2xl p-3 border border-[#E9E4F5] text-center shadow-sm relative overflow-hidden">
-          <div className="relative w-20 h-14 mx-auto mb-1">
+        <div className="bg-gradient-to-br from-white/90 to-[#F5F2FC]/80 backdrop-blur-md rounded-2xl p-3 border border-[#E9E4F5] text-center shadow-sm relative overflow-hidden group">
+          <div className="relative w-28 h-18 mx-auto mb-1 animate-soft-bounce">
             <Image
-              src="/images/mascot/kitten-sleepy.png"
-              alt="Sleeping kitten"
+              src="/images/mascot/nimii-3d-cloud.png?v=3d"
+              alt="Nimii 3D sleeping kitten taking a break"
               fill
-              className="object-contain"
+              className="object-contain drop-shadow-sm"
             />
           </div>
           <p className="text-xs font-semibold text-[#1E1B4B]">Take a break!</p>

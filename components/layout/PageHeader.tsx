@@ -45,7 +45,7 @@ export function PageHeader({
   };
 
   return (
-    <header className="flex items-center justify-between gap-4 py-3 px-4 md:px-8 z-20">
+    <header className="flex items-center justify-between gap-3 py-1 px-0 z-20 w-full">
       {/* Left side: Back button or Mobile Menu + Title */}
       <div className="flex items-center gap-3">
         {/* Mobile menu trigger */}

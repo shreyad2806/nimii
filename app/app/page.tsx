@@ -48,30 +48,34 @@ export default function HomePage() {
   return (
     <div className="flex-1 flex flex-col xl:flex-row min-w-0">
       {/* Center Main Workspace */}
-      <div className="flex-1 flex flex-col min-w-0 p-4 md:p-8 space-y-6">
+      <div className="flex-1 flex flex-col min-w-0 px-4 md:px-7 pt-2 md:pt-2.5 pb-6 space-y-3 md:space-y-3.5">
         {/* Header Controls */}
         <PageHeader />
 
         {/* Hero Banner with Kitten Playing with Yarn */}
-        <div className="relative flex flex-col md:flex-row items-center justify-between gap-6 pt-2">
+        <div className="relative flex flex-col md:flex-row items-center justify-between gap-3 pt-0">
           {/* Greeting Typography */}
-          <div className="space-y-1.5 z-10 text-center md:text-left">
-            <h1 className="text-2xl md:text-4xl font-extrabold text-[#1E1B4B] tracking-tight flex items-center justify-center md:justify-start gap-2">
+          <div className="space-y-1 z-10 text-center md:text-left">
+            <h1 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-[#1E1B4B] tracking-tight flex items-center justify-center md:justify-start gap-2">
               <span>{getGreeting()}, {user.name.split(" ")[0]}!</span>
               <span className="text-amber-400">✨</span>
             </h1>
-            <p className="text-sm md:text-base text-[#4B4E6D] font-medium">
+            <p className="text-xs md:text-sm text-[#4B4E6D] font-medium">
               Search the web. Remember what matters.
             </p>
           </div>
 
-          {/* Kitten with Yarn Ball artwork */}
-          <div className="relative w-72 h-44 md:w-96 md:h-52 select-none pointer-events-none flex-shrink-0 animate-soft-bounce">
+          {/* 3D Kitten with Yarn Ball artwork with responsive clamp sizing */}
+          <div className="relative w-[clamp(170px,20vw,270px)] h-[clamp(105px,12vw,145px)] select-none pointer-events-none flex-shrink-0 animate-soft-bounce">
+            <div
+              className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-2.5 bg-black/10 blur-sm rounded-full pointer-events-none"
+              aria-hidden="true"
+            />
             <Image
-              src="/images/mascot/kitten-yarn.png"
-              alt="Nimii playing with purple yarn"
+              src="/images/mascot/nimii-3d-yarn.png"
+              alt="Nimii 3D kitten playing with purple yarn"
               fill
-              className="object-contain"
+              className="object-contain relative z-10 drop-shadow-sm"
               priority
             />
           </div>
@@ -86,7 +90,7 @@ export default function HomePage() {
         <SuggestedPrompts onSelectPrompt={handleSelectPrompt} />
 
         {/* Bottom Three Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-0.5">
           {/* 1. Recent Memory Card */}
           <div className="bg-white/85 backdrop-blur-md rounded-3xl p-5 border border-white/80 shadow-glass flex flex-col justify-between relative overflow-hidden group">
             <div>
@@ -123,13 +127,13 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Mini Sleepy Kitten bottom graphic */}
-            <div className="relative w-24 h-12 self-center mt-3 select-none pointer-events-none opacity-90 group-hover:scale-105 transition-transform">
+            {/* 3D Resting Kitten bottom graphic */}
+            <div className="relative w-24 h-12 self-center mt-3 select-none pointer-events-none opacity-90 group-hover:scale-105 transition-transform animate-soft-bounce">
               <Image
-                src="/images/mascot/kitten-sleepy.png"
-                alt="Mini kitten"
+                src="/images/mascot/nimii-3d-rest.png?v=3d"
+                alt="Nimii 3D resting kitten"
                 fill
-                className="object-contain"
+                className="object-contain drop-shadow-sm"
               />
             </div>
           </div>

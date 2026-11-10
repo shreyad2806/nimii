@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Nimii — Your AI companion, always by your side",
   description: "A premium personal AI assistant with web search, persistent conversational memory, and actionable Open Loops.",
   icons: {
-    icon: "/images/mascot/nimii-avatar.png",
+    icon: "/images/mascot/nimii-3d-avatar.png",
   },
 };
 

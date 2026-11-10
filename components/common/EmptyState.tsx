@@ -20,10 +20,10 @@ export function EmptyState({
   mascotPose = "sleepy",
 }: EmptyStateProps) {
   const poseSrc = {
-    sleepy: "/images/mascot/kitten-sleepy.png",
-    celebrating: "/images/mascot/kitten-celebrating.png",
-    checklist: "/images/mascot/kitten-checklist.png",
-    sleeping: "/images/mascot/kitten-sleeping.png",
+    sleepy: "/images/mascot/nimii-3d-rest.png",
+    celebrating: "/images/mascot/nimii-3d-celebrating.png",
+    checklist: "/images/mascot/nimii-3d-checklist.png",
+    sleeping: "/images/mascot/nimii-3d-sleeping.png",
   }[mascotPose];
 
   return (

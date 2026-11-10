@@ -72,10 +72,10 @@ export default function LoginPage() {
           <div className="flex items-center gap-2.5">
             <div className="relative w-12 h-12">
               <Image
-                src="/images/mascot/nimii-avatar.png"
-                alt="Nimii"
+                src="/images/mascot/nimii-3d-avatar.png?v=3d"
+                alt="Nimii 3D Mascot Logo"
                 fill
-                className="object-contain"
+                className="object-contain drop-shadow-sm"
                 priority
               />
             </div>
@@ -113,13 +113,17 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Mascot sleeping on cloud with features artwork */}
-          <div className="relative w-full max-w-xl h-64 md:h-80 select-none pointer-events-none rounded-3xl overflow-hidden shadow-sm animate-soft-bounce">
+          {/* 3D Mascot sleeping on soft lavender cloud artwork */}
+          <div className="relative w-full max-w-lg h-[clamp(220px,25vw,320px)] select-none pointer-events-none animate-soft-bounce">
+            <div
+              className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4/5 h-3 bg-black/10 blur-md rounded-full pointer-events-none"
+              aria-hidden="true"
+            />
             <Image
-              src="/images/mascot/login-hero-illustration.png"
-              alt="Nimii sleeping on cloud with search and memory features"
+              src="/images/mascot/nimii-3d-cloud.png"
+              alt="Nimii 3D kitten sleeping nestled on soft lavender cloud"
               fill
-              className="object-contain"
+              className="object-contain relative z-10 drop-shadow-md"
               priority
             />
           </div>

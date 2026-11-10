@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 export type MascotPose =
   | "yarn"
@@ -14,34 +14,37 @@ export type MascotPose =
   | "sleeping"
   | "peek"
   | "avatar"
-  | "logo";
+  | "logo"
+  | "rest";
 
 interface NimiiMascotProps {
   pose?: MascotPose;
   size?: "sm" | "md" | "lg" | "xl" | "hero";
   className?: string;
   animate?: boolean;
+  withShadow?: boolean;
 }
 
 const POSE_IMAGES: Record<MascotPose, string> = {
-  yarn: "/images/mascot/kitten-yarn.png",
-  cloud: "/images/mascot/kitten-cloud.png",
-  sleepy: "/images/mascot/kitten-sleepy.png",
-  celebrating: "/images/mascot/kitten-celebrating.png",
-  checklist: "/images/mascot/kitten-checklist.png",
-  laptop: "/images/mascot/kitten-laptop.png",
-  sleeping: "/images/mascot/kitten-sleeping.png",
-  peek: "/images/mascot/kitten-chat-peek.png",
-  avatar: "/images/mascot/nimii-avatar.png",
-  logo: "/images/mascot/nimii-logo.png",
+  yarn: "/images/mascot/nimii-3d-yarn.png",
+  cloud: "/images/mascot/nimii-3d-cloud.png",
+  sleepy: "/images/mascot/nimii-3d-rest.png",
+  rest: "/images/mascot/nimii-3d-rest.png",
+  celebrating: "/images/mascot/nimii-3d-celebrating.png",
+  checklist: "/images/mascot/nimii-3d-checklist.png",
+  laptop: "/images/mascot/nimii-3d-laptop.png",
+  sleeping: "/images/mascot/nimii-3d-sleeping.png",
+  peek: "/images/mascot/nimii-3d-peek.png",
+  avatar: "/images/mascot/nimii-3d-avatar.png",
+  logo: "/images/mascot/nimii-3d-logo.png",
 };
 
 const SIZES = {
-  sm: "w-8 h-8",
-  md: "w-14 h-14",
-  lg: "w-24 h-24",
-  xl: "w-40 h-32",
-  hero: "w-64 h-48 md:w-80 md:h-56",
+  sm: "w-[clamp(28px,3vw,36px)] h-[clamp(28px,3vw,36px)]",
+  md: "w-[clamp(48px,5vw,60px)] h-[clamp(48px,5vw,60px)]",
+  lg: "w-[clamp(80px,8vw,104px)] h-[clamp(80px,8vw,104px)]",
+  xl: "w-[clamp(120px,13vw,160px)] h-[clamp(90px,10vw,120px)]",
+  hero: "w-[clamp(180px,20vw,280px)] h-[clamp(115px,13vw,160px)]",
 };
 
 export function NimiiMascot({
@@ -49,17 +52,29 @@ export function NimiiMascot({
   size = "md",
   className = "",
   animate = true,
+  withShadow = true,
 }: NimiiMascotProps) {
+  const shouldReduceMotion = useReducedMotion();
   const src = POSE_IMAGES[pose] || POSE_IMAGES.yarn;
 
   const content = (
-    <div className={`relative select-none pointer-events-none inline-block ${SIZES[size]} ${className}`}>
+    <div
+      className={`relative select-none inline-block ${SIZES[size]} ${className}`}
+    >
+      {/* 3D Character contact shadow */}
+      {withShadow && pose !== "peek" && pose !== "avatar" && pose !== "logo" && (
+        <div
+          className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3/4 h-2.5 bg-black/10 blur-sm rounded-full pointer-events-none"
+          aria-hidden="true"
+        />
+      )}
+
       <Image
         src={src}
-        alt="Nimii fluffy kitten mascot"
+        alt={`Nimii fluffy 3D kitten mascot (${pose})`}
         fill
-        className="object-contain"
-        priority
+        className="object-contain relative z-10 drop-shadow-sm"
+        priority={size === "hero" || pose === "yarn" || pose === "cloud"}
       />
     </div>
   );
@@ -70,10 +85,28 @@ export function NimiiMascot({
     <motion.div
       initial={{ opacity: 0, scale: 0.94 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="inline-block"
+      whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -2 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="inline-block cursor-pointer"
     >
-      <div className="animate-soft-bounce">{content}</div>
+      <motion.div
+        animate={
+          shouldReduceMotion
+            ? {}
+            : {
+                y: [0, -5, 0],
+                rotate: [0, 0.4, -0.4, 0],
+              }
+        }
+        transition={{
+          duration: 3.8,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
+      >
+        {content}
+      </motion.div>
     </motion.div>
   );
 }

@@ -50,10 +50,10 @@ export default function OnboardingPage() {
             <Image
               src={
                 step === 1
-                  ? "/images/mascot/kitten-yarn.png"
+                  ? "/images/mascot/nimii-3d-yarn.png"
                   : step === 2
-                  ? "/images/mascot/kitten-laptop.png"
-                  : "/images/mascot/kitten-celebrating.png"
+                  ? "/images/mascot/nimii-3d-laptop.png"
+                  : "/images/mascot/nimii-3d-celebrating.png"
               }
               alt="Nimii onboarding mascot"
               fill

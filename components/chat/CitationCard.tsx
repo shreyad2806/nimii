@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ExternalLink, Globe } from "lucide-react";
-import { Citation } from "@/lib/data/mockData";
+import type { Citation } from "@/types";
 
 export function CitationCard({ citation }: { citation: Citation }) {
   // Pick an icon or avatar letter for source

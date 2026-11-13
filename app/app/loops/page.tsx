@@ -14,7 +14,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { OpenLoopCard } from "@/components/loops/OpenLoopCard";
 import { LoopStatsCard } from "@/components/loops/LoopStatsCard";
 import { TaskModal } from "@/components/loops/TaskModal";
-import { OpenLoopItem } from "@/lib/data/mockData";
+import type { OpenLoopItem } from "@/types";
 
 export default function LoopsPage() {
   const { loops, toggleLoop, deleteLoop, updateLoop, addLoop } = useApp();

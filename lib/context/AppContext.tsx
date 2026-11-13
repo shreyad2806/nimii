@@ -1,19 +1,21 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import {
-  UserProfile,
-  UserSettings,
+import type {
+  ChatMessage,
+  Conversation,
   MemoryItem,
   OpenLoopItem,
-  Conversation,
-  ChatMessage,
+  UserProfile,
+  UserSettings,
+} from "@/types";
+import {
   INITIAL_USER,
   INITIAL_SETTINGS,
   INITIAL_MEMORIES,
   INITIAL_OPEN_LOOPS,
   INITIAL_CONVERSATIONS,
-} from "../data/mockData";
+} from "@/lib/data/mockData";
 
 interface AppContextType {
   user: UserProfile;

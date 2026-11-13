@@ -1,8 +1,10 @@
 import os
+from pathlib import Path
 from PIL import Image, ImageFilter, ImageDraw
 import numpy as np
 
-os.makedirs('public/images/backgrounds', exist_ok=True)
+ROOT = Path(__file__).resolve().parents[1]
+os.makedirs(ROOT / 'public/images/backgrounds', exist_ok=True)
 
 # Create a high-res 1920x1080 dreamy scenic anime background
 w, h = 1920, 1080
@@ -57,5 +59,5 @@ draw.polygon(hill_pts, fill=(245, 225, 232, 140))
 base = base.filter(ImageFilter.GaussianBlur(radius=8))
 
 # Save pristine clean background
-base.save('public/images/backgrounds/bg-dreamy.png')
+base.save(ROOT / 'public/images/backgrounds/bg-dreamy.png')
 print("Pristine dreamy background created successfully!")

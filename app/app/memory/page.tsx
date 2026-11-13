@@ -18,7 +18,7 @@ import { useApp } from "@/lib/context/AppContext";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { MemoryCard } from "@/components/memory/MemoryCard";
 import { MemoryDetailsPanel } from "@/components/memory/MemoryDetailsPanel";
-import { MemoryItem } from "@/lib/data/mockData";
+import type { MemoryItem } from "@/types";
 
 export default function MemoryPage() {
   const { memories, selectedMemory, setSelectedMemory } = useApp();

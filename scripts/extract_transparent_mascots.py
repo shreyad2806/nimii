@@ -1,8 +1,10 @@
 import os
+from pathlib import Path
 from PIL import Image, ImageFilter
 import numpy as np
 
-os.makedirs('public/images/mascot', exist_ok=True)
+ROOT = Path(__file__).resolve().parents[1]
+os.makedirs(ROOT / 'public/images/mascot', exist_ok=True)
 
 def isolate_mascot_with_floodfill(img_path, out_path, bg_point=(0, 0), tolerance=35):
     img = Image.open(img_path).convert("RGBA")
@@ -63,13 +65,13 @@ def isolate_mascot_with_floodfill(img_path, out_path, bg_point=(0, 0), tolerance
 
 # Apply to all mascots
 targets = [
-    ('public/images/mascot/kitten-yarn.png', 'public/images/mascot/kitten-yarn.png'),
-    ('public/images/mascot/kitten-chat-peek.png', 'public/images/mascot/kitten-chat-peek.png'),
-    ('public/images/mascot/kitten-banner-loops.png', 'public/images/mascot/kitten-banner-loops.png'),
-    ('public/images/mascot/kitten-banner-memory.png', 'public/images/mascot/kitten-banner-memory.png'),
-    ('public/images/mascot/kitten-sleeping.png', 'public/images/mascot/kitten-sleeping.png'),
-    ('public/images/mascot/kitten-checklist.png', 'public/images/mascot/kitten-checklist.png'),
-    ('public/images/mascot/kitten-sleepy.png', 'public/images/mascot/kitten-sleepy.png'),
+    (ROOT / 'public/images/mascot/kitten-yarn.png', ROOT / 'public/images/mascot/kitten-yarn.png'),
+    (ROOT / 'public/images/mascot/kitten-chat-peek.png', ROOT / 'public/images/mascot/kitten-chat-peek.png'),
+    (ROOT / 'public/images/mascot/kitten-banner-loops.png', ROOT / 'public/images/mascot/kitten-banner-loops.png'),
+    (ROOT / 'public/images/mascot/kitten-banner-memory.png', ROOT / 'public/images/mascot/kitten-banner-memory.png'),
+    (ROOT / 'public/images/mascot/kitten-sleeping.png', ROOT / 'public/images/mascot/kitten-sleeping.png'),
+    (ROOT / 'public/images/mascot/kitten-checklist.png', ROOT / 'public/images/mascot/kitten-checklist.png'),
+    (ROOT / 'public/images/mascot/kitten-sleepy.png', ROOT / 'public/images/mascot/kitten-sleepy.png'),
 ]
 
 for src, dst in targets:

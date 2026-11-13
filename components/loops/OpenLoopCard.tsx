@@ -15,7 +15,7 @@ import {
   Edit2,
   Check,
 } from "lucide-react";
-import { OpenLoopItem } from "@/lib/data/mockData";
+import type { OpenLoopItem } from "@/types";
 
 interface OpenLoopCardProps {
   loop: OpenLoopItem;

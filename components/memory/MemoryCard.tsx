@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Globe, Lightbulb, CheckSquare, Bookmark, FileText, ArrowRight } from "lucide-react";
-import { MemoryItem } from "@/lib/data/mockData";
+import type { MemoryItem } from "@/types";
 
 interface MemoryCardProps {
   memory: MemoryItem;

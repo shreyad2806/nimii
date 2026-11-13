@@ -47,70 +47,45 @@
 ```
 minimi/
 ├── app/
-│   ├── app/
-│   │   ├── chat/[conversationId]/
-│   │   │   └── page.tsx           # Active Chat interface
-│   │   ├── history/
-│   │   │   └── page.tsx           # Conversation archive
-│   │   ├── loops/
-│   │   │   └── page.tsx           # Open Loops task board
-│   │   ├── memory/
-│   │   │   └── page.tsx           # Memory timeline & details
-│   │   ├── profile/
-│   │   │   └── page.tsx           # Profile & lifetime stats
-│   │   ├── settings/
-│   │   │   └── page.tsx           # Full settings studio
-│   │   ├── layout.tsx             # 3-column app shell & navigation
-│   │   └── page.tsx               # Home dashboard
+│   ├── app/                       # Authenticated app routes and nested layout
 │   ├── login/
-│   │   └── page.tsx               # Login & Guest demo
 │   ├── onboarding/
-│   │   └── page.tsx               # Initial user onboarding
-│   ├── globals.css                # Custom glassmorphism, themes & animations
-│   ├── layout.tsx                 # Root HTML shell & AppProvider
-│   └── page.tsx                   # Root redirect to /app
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
 ├── components/
 │   ├── chat/
-│   │   ├── AssistantResponse.tsx  # Rich assistant message cards
-│   │   ├── ChatComposer.tsx       # Bottom composer with search & memory pills
-│   │   ├── CitationCard.tsx       # Web citation badges
-│   │   └── MessageBubble.tsx      # User & assistant chat bubbles
+│   ├── history/
 │   ├── home/
-│   │   └── SuggestedPrompts.tsx   # Quick suggestion pill chips
 │   ├── layout/
-│   │   ├── MobileNavigation.tsx   # Mobile bottom navigation bar
-│   │   ├── PageHeader.tsx         # Responsive header, status & theme switch
-│   │   ├── RightContextPanel.tsx  # Persistent right memory/loops drawer
-│   │   └── Sidebar.tsx            # Desktop persistent sidebar
 │   ├── loops/
-│   │   ├── LoopStatsCard.tsx      # Metrics & SVG priority donut chart
-│   │   ├── OpenLoopCard.tsx       # Interactive task item card
-│   │   └── TaskModal.tsx          # Create / edit task modal
 │   ├── mascot/
-│   │   └── NimiiMascot.tsx        # Reusable emotive mascot component
 │   ├── memory/
-│   │   ├── MemoryCard.tsx         # Knowledge timeline entry card
-│   │   └── MemoryDetailsPanel.tsx # Side panel for memory inspection
-│   └── common/
-│       ├── EmptyState.tsx         # Empty state with mascot
-│       ├── ErrorState.tsx         # Error fallback
-│       └── LoadingState.tsx       # Loading indicator
+│   └── ui/                        # Shared empty/loading/error states
 ├── lib/
-│   ├── context/
-│   │   └── AppContext.tsx         # Unified state & LocalStorage sync
-│   ├── data/
-│   │   └── mockData.ts            # Development data layer (swappable with backend)
-│   └── utils.ts                   # Tailwind merge & clsx utility
+│   ├── context/                   # Current client-side app state
+│   ├── data/                      # Development fixtures
+│   ├── services/                  # Future auth, conversation, memory and loop services
+│   ├── supabase/                  # Future browser, server and database modules
+│   └── utils.ts
 ├── public/
 │   └── images/
-│       ├── backgrounds/           # Scenic dreamy anime landscape
-│       ├── design-reference/      # Authoritative design PNGs
-│       └── mascot/                # High-res cropped mascot sprites
+│       ├── backgrounds/
+│       ├── design-reference/
+│       ├── mascot/
+│       └── qa/                    # Visual QA screenshots and iteration samples
+├── scripts/                       # Asset and screenshot utilities
+├── supabase/
+│   └── migrations/
+├── types/                         # Shared application types
 ├── design.md                      # Authoritative design system specifications
 ├── package.json
 ├── tailwind.config.ts
 └── tsconfig.json
 ```
+
+The Supabase and service directories are scaffolding only; no clients, credentials,
+database operations, or backend services have been implemented.
 
 ---
 

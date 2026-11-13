@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { X, CheckCircle2, Sparkles } from "lucide-react";
-import { OpenLoopItem } from "@/lib/data/mockData";
+import type { OpenLoopItem } from "@/types";
 
 interface TaskModalProps {
   isOpen: boolean;

@@ -3,11 +3,14 @@ import time
 import os
 import urllib.request
 import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 def log(msg):
     print(msg, flush=True)
 
-os.makedirs('screenshots', exist_ok=True)
+os.makedirs(PROJECT_ROOT / "public/images/qa", exist_ok=True)
 
 chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 if not os.path.exists(chrome_path):
@@ -17,7 +20,8 @@ log("Starting Next.js server on 127.0.0.1:3333...")
 server_proc = subprocess.Popen(
     ["node", "./node_modules/next/dist/bin/next", "start", "-p", "3333", "-H", "127.0.0.1"],
     stdout=subprocess.DEVNULL,
-    stderr=subprocess.DEVNULL
+    stderr=subprocess.DEVNULL,
+    cwd=PROJECT_ROOT,
 )
 
 # Wait for server
@@ -51,7 +55,7 @@ pages = [
 
 # Desktop
 for name, url in pages:
-    out_file = os.path.abspath(f"screenshots/{name}-desktop.png")
+    out_file = str(PROJECT_ROOT / "public/images/qa" / f"{name}-desktop.png")
     log(f"Capturing {name} desktop...")
     subprocess.run([
         chrome_path,
@@ -66,7 +70,7 @@ for name, url in pages:
 
 # Mobile
 for name, url in pages:
-    out_file = os.path.abspath(f"screenshots/{name}-mobile.png")
+    out_file = str(PROJECT_ROOT / "public/images/qa" / f"{name}-mobile.png")
     log(f"Capturing {name} mobile...")
     subprocess.run([
         chrome_path,

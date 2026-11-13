@@ -14,7 +14,7 @@ import {
   Edit2,
   Download,
 } from "lucide-react";
-import { Conversation } from "@/lib/data/mockData";
+import type { Conversation } from "@/types";
 
 interface ConversationCardProps {
   conversation: Conversation;

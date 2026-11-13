@@ -12,7 +12,7 @@ import {
   Bookmark,
   ChevronDown,
 } from "lucide-react";
-import { ChatMessage } from "@/lib/data/mockData";
+import type { ChatMessage } from "@/types";
 import { CitationCard } from "./CitationCard";
 import { useApp } from "@/lib/context/AppContext";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ChatMessage } from "@/lib/data/mockData";
+import type { ChatMessage } from "@/types";
 import { AssistantResponse } from "./AssistantResponse";
 import { useApp } from "@/lib/context/AppContext";
 

@@ -1,5 +1,8 @@
 from PIL import Image
 import numpy as np
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
 
 def make_transparent_edges(img_path, out_path, bg_tolerance=30):
     img = Image.open(img_path).convert("RGBA")
@@ -32,15 +35,15 @@ def make_transparent_edges(img_path, out_path, bg_tolerance=30):
     print(f"Processed {img_path} -> {out_path}")
 
 mascot_list = [
-    ('public/images/mascot/kitten-yarn.png', 'public/images/mascot/kitten-yarn.png'),
-    ('public/images/mascot/kitten-cloud.png', 'public/images/mascot/kitten-cloud.png'),
-    ('public/images/mascot/kitten-checklist.png', 'public/images/mascot/kitten-checklist.png'),
-    ('public/images/mascot/kitten-laptop.png', 'public/images/mascot/kitten-laptop.png'),
-    ('public/images/mascot/kitten-banner-loops.png', 'public/images/mascot/kitten-banner-loops.png'),
-    ('public/images/mascot/kitten-banner-memory.png', 'public/images/mascot/kitten-banner-memory.png'),
-    ('public/images/mascot/kitten-sleeping.png', 'public/images/mascot/kitten-sleeping.png'),
-    ('public/images/mascot/kitten-celebrating.png', 'public/images/mascot/kitten-celebrating.png'),
-    ('public/images/mascot/kitten-sleepy.png', 'public/images/mascot/kitten-sleepy.png'),
+    (ROOT / 'public/images/mascot/kitten-yarn.png', ROOT / 'public/images/mascot/kitten-yarn.png'),
+    (ROOT / 'public/images/mascot/kitten-cloud.png', ROOT / 'public/images/mascot/kitten-cloud.png'),
+    (ROOT / 'public/images/mascot/kitten-checklist.png', ROOT / 'public/images/mascot/kitten-checklist.png'),
+    (ROOT / 'public/images/mascot/kitten-laptop.png', ROOT / 'public/images/mascot/kitten-laptop.png'),
+    (ROOT / 'public/images/mascot/kitten-banner-loops.png', ROOT / 'public/images/mascot/kitten-banner-loops.png'),
+    (ROOT / 'public/images/mascot/kitten-banner-memory.png', ROOT / 'public/images/mascot/kitten-banner-memory.png'),
+    (ROOT / 'public/images/mascot/kitten-sleeping.png', ROOT / 'public/images/mascot/kitten-sleeping.png'),
+    (ROOT / 'public/images/mascot/kitten-celebrating.png', ROOT / 'public/images/mascot/kitten-celebrating.png'),
+    (ROOT / 'public/images/mascot/kitten-sleepy.png', ROOT / 'public/images/mascot/kitten-sleepy.png'),
 ]
 
 for in_p, out_p in mascot_list:

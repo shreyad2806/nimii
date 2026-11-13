@@ -1,6 +1,9 @@
 from PIL import Image, ImageFilter
 import numpy as np
 from collections import deque
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
 
 def isolate_clean(img_path, out_path, tol=40):
     img = Image.open(img_path).convert("RGBA")
@@ -45,7 +48,7 @@ def isolate_clean(img_path, out_path, tol=40):
     Image.fromarray(arr, "RGBA").save(out_path)
     print(f"Isolated clean: {out_path}")
 
-isolate_clean('public/images/mascot/kitten-laptop.png', 'public/images/mascot/kitten-laptop.png')
-isolate_clean('public/images/mascot/kitten-checklist.png', 'public/images/mascot/kitten-checklist.png')
-isolate_clean('public/images/mascot/kitten-celebrating.png', 'public/images/mascot/kitten-celebrating.png')
-isolate_clean('public/images/mascot/kitten-sleepy.png', 'public/images/mascot/kitten-sleepy.png')
+isolate_clean(ROOT / 'public/images/mascot/kitten-laptop.png', ROOT / 'public/images/mascot/kitten-laptop.png')
+isolate_clean(ROOT / 'public/images/mascot/kitten-checklist.png', ROOT / 'public/images/mascot/kitten-checklist.png')
+isolate_clean(ROOT / 'public/images/mascot/kitten-celebrating.png', ROOT / 'public/images/mascot/kitten-celebrating.png')
+isolate_clean(ROOT / 'public/images/mascot/kitten-sleepy.png', ROOT / 'public/images/mascot/kitten-sleepy.png')

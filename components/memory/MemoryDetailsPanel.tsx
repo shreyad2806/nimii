@@ -13,7 +13,7 @@ import {
   ChevronRight,
   ExternalLink,
 } from "lucide-react";
-import { MemoryItem } from "@/lib/data/mockData";
+import type { MemoryItem } from "@/types";
 
 interface MemoryDetailsPanelProps {
   memory: MemoryItem | null;

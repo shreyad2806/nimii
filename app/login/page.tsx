@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,55 +8,151 @@ import {
   Mail,
   ArrowRight,
   Sparkles,
+  AlertCircle,
 } from "lucide-react";
 import { useApp } from "@/lib/context/AppContext";
+import { authService } from "@/lib/services/auth";
 
 export default function LoginPage() {
   const router = useRouter();
   const { loginAsGuest, updateUser } = useApp();
   const [showEmailForm, setShowEmailForm] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleGoogleSignIn = () => {
+  // Check URL query parameters for callback errors
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("error") === "auth_callback_failed") {
+        setErrorMessage("Authentication was interrupted or canceled. Please try again.");
+      }
+    }
+  }, []);
+
+  const handleGoogleSignIn = async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     setStatusMessage("Connecting with Google...");
-    setTimeout(() => {
-      updateUser({
-        name: "Shreya Dubey",
-        email: "shreya.dubey@gmail.com",
-        avatarInitial: "S",
-        isGuest: false,
-        status: "Online",
-      });
+
+    if (!authService.isConfigured()) {
+      // Mock fallback if unconfigured
+      setTimeout(() => {
+        updateUser({
+          name: "Shreya Dubey",
+          email: "shreya.dubey@gmail.com",
+          avatarInitial: "S",
+          isGuest: false,
+          status: "Online",
+        });
+        setIsLoading(false);
+        router.push("/app");
+      }, 700);
+      return;
+    }
+
+    const { error } = await authService.signInWithGoogle();
+    if (error) {
       setIsLoading(false);
-      router.push("/app");
-    }, 700);
+      setStatusMessage(null);
+      setErrorMessage(error);
+    }
   };
 
-  const handleEmailSignIn = (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email) {
+      setErrorMessage("Please enter your email.");
+      return;
+    }
+    if (!password) {
+      setErrorMessage("Please enter your password.");
+      return;
+    }
+
     setIsLoading(true);
-    setStatusMessage("Authenticating...");
-    setTimeout(() => {
-      updateUser({
-        name: email.split("@")[0],
-        email: email,
-        avatarInitial: email[0].toUpperCase(),
-        isGuest: false,
-        status: "Online",
-      });
-      setIsLoading(false);
-      router.push("/app");
-    }, 700);
+    setErrorMessage(null);
+
+    if (!authService.isConfigured()) {
+      // Graceful fallback for local offline demo
+      setStatusMessage("Authenticating...");
+      setTimeout(() => {
+        updateUser({
+          name: name.trim() || email.split("@")[0],
+          email: email,
+          avatarInitial: (name.trim() || email)[0].toUpperCase(),
+          isGuest: false,
+          status: "Online",
+        });
+        setIsLoading(false);
+        router.push("/app");
+      }, 700);
+      return;
+    }
+
+    if (authMode === "signup") {
+      setStatusMessage("Creating your account...");
+      const res = await authService.signUpWithEmail(email, password, name);
+      if (res.error) {
+        setIsLoading(false);
+        setStatusMessage(null);
+        setErrorMessage(res.error);
+      } else if (res.needsEmailConfirmation) {
+        setIsLoading(false);
+        setStatusMessage("A confirmation link has been sent to your email! Please check your inbox.");
+      } else {
+        setStatusMessage("Account created! Entering Nimii...");
+        router.push("/app");
+      }
+    } else {
+      setStatusMessage("Signing in...");
+      const res = await authService.signInWithEmail(email, password);
+      if (res.error) {
+        setIsLoading(false);
+        setStatusMessage(null);
+        setErrorMessage(res.error);
+      } else {
+        setStatusMessage("Welcome back! Entering Nimii...");
+        router.push("/app");
+      }
+    }
   };
 
-  const handleGuestDemo = () => {
-    loginAsGuest();
-    router.push("/app");
+  const handleGuestDemo = async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    setStatusMessage("Starting Guest Demo session...");
+
+    try {
+      if (authService.isConfigured()) {
+        const res = await authService.signInAsGuest();
+        if (res.error) {
+          // If Supabase guest sign in throws rate limit or error, fallback to context guest
+          await loginAsGuest();
+          router.push("/app");
+          return;
+        }
+
+        if (res.reused) {
+          setStatusMessage("Resuming your guest session...");
+        } else {
+          setStatusMessage("Guest session created! Welcome to Nimii...");
+        }
+      }
+
+      await loginAsGuest();
+      router.push("/app");
+    } catch {
+      await loginAsGuest();
+      router.push("/app");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -141,9 +237,16 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {statusMessage && (
+            {errorMessage && (
+              <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 text-xs font-semibold text-center flex items-center justify-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+
+            {statusMessage && !errorMessage && (
               <div className="p-3 rounded-2xl bg-[#EDE9FE] text-[#6C5CE7] text-xs font-semibold text-center flex items-center justify-center gap-2 animate-pulse">
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-4 h-4 flex-shrink-0" />
                 <span>{statusMessage}</span>
               </div>
             )}
@@ -154,7 +257,7 @@ export default function LoginPage() {
               <button
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
-                className="w-full flex items-center justify-center gap-3 py-3.5 px-5 rounded-2xl border border-[#E2DEFA] hover:border-[#6C5CE7] bg-white hover:bg-[#FAF8FF] font-semibold text-sm text-[#1E1B4B] shadow-sm transition-all hover:shadow-md active:scale-[0.99]"
+                className="w-full flex items-center justify-center gap-3 py-3.5 px-5 rounded-2xl border border-[#E2DEFA] hover:border-[#6C5CE7] bg-white hover:bg-[#FAF8FF] font-semibold text-sm text-[#1E1B4B] shadow-sm transition-all hover:shadow-md active:scale-[0.99] disabled:opacity-60"
               >
                 <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
                   <path
@@ -180,7 +283,10 @@ export default function LoginPage() {
               {/* Email Sign In Toggle */}
               {!showEmailForm ? (
                 <button
-                  onClick={() => setShowEmailForm(true)}
+                  onClick={() => {
+                    setShowEmailForm(true);
+                    setErrorMessage(null);
+                  }}
                   disabled={isLoading}
                   className="w-full flex items-center justify-center gap-3 py-3.5 px-5 rounded-2xl border border-[#E2DEFA] hover:border-[#6C5CE7] bg-white hover:bg-[#FAF8FF] font-semibold text-sm text-[#1E1B4B] shadow-sm transition-all hover:shadow-md active:scale-[0.99]"
                 >
@@ -188,7 +294,18 @@ export default function LoginPage() {
                   <span>Continue with Email</span>
                 </button>
               ) : (
-                <form onSubmit={handleEmailSignIn} className="space-y-3 pt-2">
+                <form onSubmit={handleEmailSubmit} className="space-y-3 pt-2">
+                  {authMode === "signup" && (
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Your Name (optional)"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full px-4 py-3 rounded-2xl bg-[#F8F6FC] border border-[#DDD6FE] text-sm text-[#1E1B4B] placeholder-[#94A3B8] outline-none focus:ring-2 focus:ring-[#6C5CE7]"
+                      />
+                    </div>
+                  )}
                   <div>
                     <input
                       type="email"
@@ -202,7 +319,12 @@ export default function LoginPage() {
                   <div>
                     <input
                       type="password"
-                      placeholder="Enter your password (optional)"
+                      required
+                      placeholder={
+                        authMode === "signup"
+                          ? "Create a password (min 6 chars)"
+                          : "Enter your password"
+                      }
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full px-4 py-3 rounded-2xl bg-[#F8F6FC] border border-[#DDD6FE] text-sm text-[#1E1B4B] placeholder-[#94A3B8] outline-none focus:ring-2 focus:ring-[#6C5CE7]"
@@ -210,10 +332,33 @@ export default function LoginPage() {
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-2xl bg-[#6C5CE7] hover:bg-[#5B46D9] text-white font-bold text-sm shadow-md transition-all"
+                    disabled={isLoading}
+                    className="w-full py-3.5 rounded-2xl bg-[#6C5CE7] hover:bg-[#5B46D9] disabled:opacity-60 text-white font-bold text-sm shadow-md transition-all active:scale-[0.99]"
                   >
-                    Sign In with Email
+                    {isLoading
+                      ? "Please wait..."
+                      : authMode === "signup"
+                      ? "Create Account"
+                      : "Sign In with Email"}
                   </button>
+
+                  <div className="flex items-center justify-between text-xs px-1 text-[#7C7F96] pt-1">
+                    <span>
+                      {authMode === "signup"
+                        ? "Already have an account?"
+                        : "Need an account?"}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAuthMode(authMode === "signup" ? "signin" : "signup");
+                        setErrorMessage(null);
+                      }}
+                      className="text-[#6C5CE7] font-bold hover:underline"
+                    >
+                      {authMode === "signup" ? "Sign In" : "Sign Up"}
+                    </button>
+                  </div>
                 </form>
               )}
             </div>
@@ -230,7 +375,8 @@ export default function LoginPage() {
             <div className="space-y-2 text-center">
               <button
                 onClick={handleGuestDemo}
-                className="w-full flex items-center justify-between py-3.5 px-6 rounded-2xl bg-[#EDE9FE] hover:bg-[#DDD6FE] text-[#6C5CE7] font-bold text-sm shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99]"
+                disabled={isLoading}
+                className="w-full flex items-center justify-between py-3.5 px-6 rounded-2xl bg-[#EDE9FE] hover:bg-[#DDD6FE] disabled:opacity-60 text-[#6C5CE7] font-bold text-sm shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99]"
               >
                 <div className="flex items-center gap-2.5">
                   <span className="text-lg">🐱</span>

@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 /**
  * Refreshes the user's Supabase auth session cookies in Next.js 15 middleware.
  * Follows the official @supabase/ssr pattern using getAll and setAll.
+ * Also enforces route protection for /app routes.
  */
 export async function updateSession(request: NextRequest): Promise<NextResponse> {
   let supabaseResponse = NextResponse.next({
@@ -55,10 +56,31 @@ export async function updateSession(request: NextRequest): Promise<NextResponse>
   // supabase.auth.getUser().
   // DO NOT use supabase.auth.getSession() as it is insecure on the server.
   // supabase.auth.getUser() validates the JWT against Supabase Auth.
+  let user = null;
   try {
-    await supabase.auth.getUser();
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
   } catch {
     // Graceful fallback if network is unreachable or tokens are invalid
+  }
+
+  const pathname = request.nextUrl.pathname;
+  const isAppRoute = pathname.startsWith("/app");
+
+  // Route Protection:
+  // If the user navigates to /app or its subpaths without an active session,
+  // redirect them to /login while preserving the intended destination.
+  if (!user && isAppRoute) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/login";
+    redirectUrl.searchParams.set("redirect", pathname);
+
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    // Propagate any session cookies that may have been updated/cleared
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value);
+    });
+    return redirectResponse;
   }
 
   // IMPORTANT: You must return the supabaseResponse object.

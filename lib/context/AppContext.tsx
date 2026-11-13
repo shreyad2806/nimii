@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import type {
   ChatMessage,
   Conversation,
@@ -16,12 +16,14 @@ import {
   INITIAL_OPEN_LOOPS,
   INITIAL_CONVERSATIONS,
 } from "@/lib/data/mockData";
+import { authService } from "@/lib/services/auth";
+import { createClient } from "@/lib/supabase/client";
 
 interface AppContextType {
   user: UserProfile;
   updateUser: (updates: Partial<UserProfile>) => void;
-  loginAsGuest: () => void;
-  logout: () => void;
+  loginAsGuest: () => Promise<void> | void;
+  logout: () => Promise<void> | void;
 
   settings: UserSettings;
   updateSettings: (updates: Partial<UserSettings>) => void;
@@ -149,7 +151,119 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setUser((prev) => ({ ...prev, ...updates }));
   };
 
-  const loginAsGuest = () => {
+  // Sync with Supabase Auth state
+  useEffect(() => {
+    if (!authService.isConfigured()) return;
+
+    let isMounted = true;
+    const supabase = createClient();
+
+    const syncUser = async () => {
+      try {
+        const { data: { user: sbUser } } = await supabase.auth.getUser();
+        if (sbUser && isMounted) {
+          const profile = await authService.getProfile(sbUser.id);
+          const displayName =
+            profile?.display_name ||
+            sbUser.user_metadata?.full_name ||
+            sbUser.user_metadata?.display_name ||
+            sbUser.email?.split("@")[0] ||
+            (sbUser.is_anonymous ? "Guest Explorer" : "Explorer");
+
+          const userEmail = sbUser.email || (sbUser.is_anonymous ? "guest@nimii.ai" : "");
+          const avatarInitial = displayName.charAt(0).toUpperCase() || "E";
+          const isGuest = Boolean(sbUser.is_anonymous);
+          const joinedDate = sbUser.created_at
+            ? new Date(sbUser.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+            : "Today";
+
+          setUser((prev) => ({
+            ...prev,
+            id: sbUser.id,
+            name: displayName,
+            email: userEmail,
+            avatarInitial,
+            isGuest,
+            status: "Online",
+            joinedDate,
+          }));
+        }
+      } catch (err) {
+        console.warn("Could not sync user from Supabase session:", err);
+      }
+    };
+
+    syncUser();
+
+    // Listen for auth state changes (sign in, sign out, token refresh)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (!isMounted) return;
+
+        if (event === "SIGNED_IN" || event === "USER_UPDATED" || event === "TOKEN_REFRESHED") {
+          if (session?.user) {
+            const sbUser = session.user;
+            const profile = await authService.getProfile(sbUser.id);
+            const displayName =
+              profile?.display_name ||
+              sbUser.user_metadata?.full_name ||
+              sbUser.user_metadata?.display_name ||
+              sbUser.email?.split("@")[0] ||
+              (sbUser.is_anonymous ? "Guest Explorer" : "Explorer");
+
+            const userEmail = sbUser.email || (sbUser.is_anonymous ? "guest@nimii.ai" : "");
+            const avatarInitial = displayName.charAt(0).toUpperCase() || "E";
+            const isGuest = Boolean(sbUser.is_anonymous);
+            const joinedDate = sbUser.created_at
+              ? new Date(sbUser.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+              : "Today";
+
+            setUser((prev) => ({
+              ...prev,
+              id: sbUser.id,
+              name: displayName,
+              email: userEmail,
+              avatarInitial,
+              isGuest,
+              status: "Online",
+              joinedDate,
+            }));
+          }
+        } else if (event === "SIGNED_OUT") {
+          setUser({
+            ...INITIAL_USER,
+            isGuest: false,
+          });
+          try {
+            localStorage.removeItem("nimii_user");
+          } catch {}
+        }
+      }
+    );
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const loginAsGuest = async () => {
+    if (authService.isConfigured()) {
+      const res = await authService.signInAsGuest();
+      if (res.user) {
+        setUser({
+          id: res.user.id,
+          name: "Guest Explorer",
+          email: "guest@nimii.ai",
+          avatarInitial: "G",
+          isGuest: true,
+          status: "Online",
+          joinedDate: "Today",
+        });
+        return;
+      }
+    }
+    // Fallback if Supabase is offline or unconfigured
     setUser({
       name: "Guest Explorer",
       email: "guest@nimii.ai",
@@ -160,11 +274,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const logout = () => {
+  const logout = async () => {
+    if (authService.isConfigured()) {
+      await authService.signOut();
+    }
     setUser({
       ...INITIAL_USER,
       isGuest: false,
     });
+    try {
+      localStorage.removeItem("nimii_user");
+    } catch {}
   };
 
   const updateSettings = (updates: Partial<UserSettings>) => {

@@ -1,5 +1,6 @@
 import { createBrowserClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database.types";
 
 /**
  * Validates that the required Supabase environment variables are available.
@@ -27,7 +28,7 @@ export function isSupabaseConfigured(): boolean {
  *
  * Missing environment variables are validated gracefully with informative error messages.
  */
-export function createClient<Database = any>(): SupabaseClient<Database> {
+export function createClient(): SupabaseClient<Database> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey =
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||

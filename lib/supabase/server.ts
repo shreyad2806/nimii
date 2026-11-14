@@ -1,6 +1,8 @@
+import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database.types";
 
 /**
  * Validates that the required Supabase environment variables are available.
@@ -28,7 +30,7 @@ export function isSupabaseConfigured(): boolean {
  * Each invocation creates a new, isolated client instance reading cookies from
  * the current request, preventing cross-request session leakage.
  */
-export async function createClient<Database = any>(): Promise<SupabaseClient<Database>> {
+export async function createClient(): Promise<SupabaseClient<Database>> {
   const cookieStore = await cookies();
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

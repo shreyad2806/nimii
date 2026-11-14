@@ -19,6 +19,16 @@ import {
 import { authService } from "@/lib/services/auth";
 import { createClient } from "@/lib/supabase/client";
 
+async function getAuthenticatedProfile() {
+  const result = await authService.getProfile();
+  if (result.error) {
+    console.warn("Could not load profile from Supabase:", result.error);
+    return null;
+  }
+
+  return result.data;
+}
+
 interface AppContextType {
   user: UserProfile;
   updateUser: (updates: Partial<UserProfile>) => void;
@@ -162,7 +172,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       try {
         const { data: { user: sbUser } } = await supabase.auth.getUser();
         if (sbUser && isMounted) {
-          const profile = await authService.getProfile(sbUser.id);
+          const profile = await getAuthenticatedProfile();
           const displayName =
             profile?.display_name ||
             sbUser.user_metadata?.full_name ||
@@ -203,7 +213,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         if (event === "SIGNED_IN" || event === "USER_UPDATED" || event === "TOKEN_REFRESHED") {
           if (session?.user) {
             const sbUser = session.user;
-            const profile = await authService.getProfile(sbUser.id);
+            const profile = await getAuthenticatedProfile();
             const displayName =
               profile?.display_name ||
               sbUser.user_metadata?.full_name ||

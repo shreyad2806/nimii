@@ -65,8 +65,12 @@ minimi/
 ├── lib/
 │   ├── context/                   # Current client-side app state
 │   ├── data/                      # Development fixtures
-│   ├── services/                  # Future auth, conversation, memory and loop services
-│   ├── supabase/                  # Future browser, server and database modules
+│   ├── domain/                    # Shared domain types and AI streaming contract
+│   ├── errors/                    # Application errors and Result type
+│   ├── repositories/              # Typed persistence interfaces and implementations
+│   ├── services/                  # Authentication and application orchestration
+│   ├── supabase/                  # Typed browser/server clients and middleware
+│   ├── validators/                # Zod schemas for incoming domain data
 │   └── utils.ts
 ├── public/
 │   └── images/
@@ -77,15 +81,44 @@ minimi/
 ├── scripts/                       # Asset and screenshot utilities
 ├── supabase/
 │   └── migrations/
-├── types/                         # Shared application types
+├── types/                         # UI and generated-style database types
 ├── design.md                      # Authoritative design system specifications
 ├── package.json
 ├── tailwind.config.ts
 └── tsconfig.json
 ```
 
-The Supabase and service directories are scaffolding only; no clients, credentials,
-database operations, or backend services have been implemented.
+The browser and server use separate Supabase clients, both typed from the checked-in
+schema. Database access goes through repositories using the caller's authenticated
+session, so RLS remains authoritative. The existing profile read is session-scoped;
+conversation, memory, and Open Loop persistence will be added in a later phase.
+Server-side Supabase code is marked server-only and no service-role client is used.
+
+### Conversation API
+
+All endpoints require a valid Supabase session cookie. List and message endpoints
+accept `limit` (1–100, default 20) and `offset` (default 0). Successful responses
+use `{ "data": ..., "error": null }`; errors use the same envelope with a stable
+error code and public message. Invalid input returns 400, unauthenticated requests
+401, missing or non-owned resources 404, and internal failures a generic 500.
+
+| Method and path | Behavior |
+|---|---|
+| `GET /api/conversations` | List the signed-in user's conversations by most recently updated. |
+| `POST /api/conversations` | Create a conversation; optional `title` and `firstMessage` fields. The first message is saved as a user message. |
+| `GET /api/conversations/:id` | Get a conversation and a paged message slice. |
+| `PATCH /api/conversations/:id` | Rename a conversation with `{ "title": "..." }`. |
+| `DELETE /api/conversations/:id` | Delete a conversation and its cascading messages. |
+| `GET /api/conversations/:id/messages` | Get messages in chronological order. |
+| `POST /api/conversations/:id/messages` | Save a user message with `{ "content": "..." }`; clients cannot choose its role. |
+| `DELETE /api/conversations/:id/messages/:messageId` | Delete a message owned by the conversation. |
+
+Non-owned resources return 404 rather than revealing whether another user's
+conversation or message exists. Assistant/system/tool roles remain database-valid
+for trusted server-side use; the public message endpoint only accepts user content.
+Apply `supabase/migrations/20261114134300_touch_conversation_updated_at_on_message.sql`
+before deployment so new and deleted messages advance their parent conversation's
+`updated_at` value.
 
 ---
 

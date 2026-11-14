@@ -1,16 +1,13 @@
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { User, Session, AuthError } from "@supabase/supabase-js";
+import type { Profile } from "@/lib/domain/types";
+import { SupabaseProfileRepository } from "@/lib/repositories/profile/supabase-profile.repository";
+import { failure, type Result } from "@/lib/errors/result";
+import { AppError } from "@/lib/errors/app-error";
 
 export interface AuthResponse<T = any> {
   data: T | null;
   error: string | null;
-}
-
-export interface ProfileData {
-  id: string;
-  display_name: string;
-  avatar_url: string | null;
-  created_at?: string;
 }
 
 /**
@@ -322,27 +319,14 @@ class AuthService {
   /**
    * Fetch user profile from public.profiles
    */
-  public async getProfile(userId: string): Promise<ProfileData | null> {
-    if (!this.isConfigured() || !userId) {
-      return null;
+  public async getProfile(): Promise<Result<Profile | null>> {
+    if (!this.isConfigured()) {
+      return failure(
+        new AppError("DATABASE_ERROR", "Supabase is not configured.")
+      );
     }
 
-    try {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id, display_name, avatar_url, created_at")
-        .eq("id", userId)
-        .maybeSingle();
-
-      if (error || !data) {
-        return null;
-      }
-
-      return data as ProfileData;
-    } catch {
-      return null;
-    }
+    return new SupabaseProfileRepository(createClient()).getForCurrentUser();
   }
 
   /**

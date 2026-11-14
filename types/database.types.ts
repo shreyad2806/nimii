@@ -11,7 +11,21 @@ export type MemoryType = "fact" | "preference" | "decision" | "research" | "proj
 export type OpenLoopStatus = "pending" | "in_progress" | "completed" | "archived";
 export type OpenLoopPriority = "low" | "medium" | "high";
 
-export interface Database {
+type Relationship<
+  Name extends string,
+  Columns extends string[],
+  Relation extends string,
+  ReferencedColumns extends string[],
+  OneToOne extends boolean = false,
+> = {
+  foreignKeyName: Name;
+  columns: Columns;
+  isOneToOne: OneToOne;
+  referencedRelation: Relation;
+  referencedColumns: ReferencedColumns;
+};
+
+export type Database = {
   public: {
     Tables: {
       profiles: {
@@ -36,6 +50,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       conversations: {
         Row: {
@@ -59,6 +74,9 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          Relationship<"conversations_user_id_fkey", ["user_id"], "profiles", ["id"]>,
+        ];
       };
       messages: {
         Row: {
@@ -85,6 +103,9 @@ export interface Database {
           metadata?: Json;
           created_at?: string;
         };
+        Relationships: [
+          Relationship<"messages_conversation_id_fkey", ["conversation_id"], "conversations", ["id"]>,
+        ];
       };
       memories: {
         Row: {
@@ -120,6 +141,10 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          Relationship<"memories_source_message_id_fkey", ["source_message_id"], "messages", ["id"]>,
+          Relationship<"memories_user_id_fkey", ["user_id"], "profiles", ["id"]>,
+        ];
       };
       sources: {
         Row: {
@@ -152,6 +177,9 @@ export interface Database {
           position?: number;
           created_at?: string;
         };
+        Relationships: [
+          Relationship<"sources_message_id_fkey", ["message_id"], "messages", ["id"]>,
+        ];
       };
       open_loops: {
         Row: {
@@ -190,6 +218,9 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          Relationship<"open_loops_user_id_fkey", ["user_id"], "profiles", ["id"]>,
+        ];
       };
       search_logs: {
         Row: {
@@ -219,7 +250,15 @@ export interface Database {
           result_count?: number;
           created_at?: string;
         };
+        Relationships: [
+          Relationship<"search_logs_message_id_fkey", ["message_id"], "messages", ["id"]>,
+          Relationship<"search_logs_user_id_fkey", ["user_id"], "profiles", ["id"]>,
+        ];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
-}
+};
